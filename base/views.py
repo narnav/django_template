@@ -10,6 +10,37 @@ from .serializers import TaskSerializer
 from .models import Task
 from django.contrib.auth.models import User
 
+from rest_framework.views import APIView
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework import status
+# //////////// image upload / display 
+# return all images to client
+@api_view(['GET'])
+def getImages(request):
+    res=[] #create an empty list
+    for img in Task.objects.all(): #run on every row in the table...
+        res.append({"title":img.title,
+                "description":img.description,
+                "completed":False,
+               "image":str( img.image)
+                }) #append row by to row to res list
+    return Response(res) #return array as json response
+
+
+class APIViews(APIView):
+    parser_class=(MultiPartParser,FormParser)
+    def post(self,request,*args,**kwargs):
+        api_serializer=TaskSerializer(data=request.data)
+        
+        if api_serializer.is_valid():
+            api_serializer.save()
+            return Response(api_serializer.data,status=status.HTTP_201_CREATED)
+        else:
+            print('error',api_serializer.errors)
+            return Response(api_serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+# //////////// end      image upload / display 
+
 # ////////////////////////////////login /register
 # login
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
