@@ -2,7 +2,7 @@
 
 # contains
 
-    login,register, test, test table (task)
+    login,register, test, test table (task),image upload /dispaly
 
 # Create virtual enviroment
 
