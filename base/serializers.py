@@ -6,6 +6,8 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = '__all__'
-    # def create(self, validated_data):
-    #     return Task.objects.create(**validated_data)
+    def create(self, validated_data):
+        user = self.context['user']
+        print(user)
+        return Task.objects.create(**validated_data,user=user)
 
