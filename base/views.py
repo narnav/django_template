@@ -6,9 +6,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 
+from django.contrib.auth.models import User
 from .serializers import TaskSerializer
 from .models import Task
-from django.contrib.auth.models import User
+
 
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -42,6 +43,50 @@ class ImageUpload(APIView):
     def get(self,request,*args,**kwargs):
         pass
 # //////////// end      image upload / display 
+
+@permission_classes([IsAuthenticated])
+class MyModelView(APIView):
+    """
+    This class handle the CRUD operations for MyModel
+    """
+    def get(self, request):
+        """
+        Handle GET requests to return a list of MyModel objects
+        """
+        my_model = Task.objects.all()
+        serializer = TaskSerializer(my_model, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        """
+        Handle POST requests to create a new Task object
+        """
+        serializer = TaskSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def put(self, request, pk):
+        """
+        Handle PUT requests to update an existing Task object
+        """
+        my_model = Task.objects.get(pk=pk)
+        serializer = TaskSerializer(my_model, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, pk):
+        """
+        Handle DELETE requests to delete a Task object
+        """
+        my_model = Task.objects.get(pk=pk)
+        my_model.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 
 # ////////////////////////////////login /register
 # login

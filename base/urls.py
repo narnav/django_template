@@ -17,6 +17,8 @@ urlpatterns = [
     path('test/',views.test ),
     path('get_all_images', views.getTasks),
     path('upload_image/',views.ImageUpload.as_view()),
+    path('mymodel/', views.MyModelView.as_view()),
+    path('mymodel/<int:pk>/', views.MyModelView.as_view()),
     # upload images
 ]
 # data - OK
