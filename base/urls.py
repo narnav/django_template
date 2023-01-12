@@ -15,8 +15,8 @@ urlpatterns = [
     path('tasks/',tasks ),
     path('tasks/<int:id>',tasks),
     path('test/',views.test ),
-    path('getImages', views.getImages),
-    path('posts/',views.APIViews.as_view()),
+    path('get_all_images', views.getTasks),
+    path('upload_image/',views.ImageUpload.as_view()),
     # upload images
 ]
 # data - OK

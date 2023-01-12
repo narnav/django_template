@@ -16,7 +16,7 @@ from rest_framework import status
 # //////////// image upload / display 
 # return all images to client
 @api_view(['GET'])
-def getImages(request):
+def getTasks(request):
     res=[] #create an empty list
     for img in Task.objects.all(): #run on every row in the table...
         res.append({"title":img.title,
@@ -26,8 +26,9 @@ def getImages(request):
                 }) #append row by to row to res list
     return Response(res) #return array as json response
 
+# upload image method (post)
 
-class APIViews(APIView):
+class ImageUpload(APIView):
     parser_class=(MultiPartParser,FormParser)
     def post(self,request,*args,**kwargs):
         api_serializer=TaskSerializer(data=request.data)
@@ -38,7 +39,8 @@ class APIViews(APIView):
         else:
             print('error',api_serializer.errors)
             return Response(api_serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-
+    def get(self,request,*args,**kwargs):
+        pass
 # //////////// end      image upload / display 
 
 # ////////////////////////////////login /register
