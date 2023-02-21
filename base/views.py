@@ -189,9 +189,9 @@ class MPrintSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        user = self.context['user']
-        print(user)
-        return MPrint.objects.create(**validated_data, user=user)
+        # user = self.context['user']
+        # print(user)
+        return MPrint.objects.create(**validated_data)  # , user=user)
    # model crud
 # @permission_classes([IsAuthenticated])
 
@@ -207,7 +207,7 @@ class MPrintView(APIView):
         # usr =request.user
         # print(usr)
         serializer = MPrintSerializer(
-            data=request.data, context={'user': request.user})
+            data=request.data)  # , context={'user': request.user})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
